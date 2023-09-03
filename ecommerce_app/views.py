@@ -44,8 +44,14 @@ class OrderList(generics.ListCreateAPIView):
     serializer_class = serializers.OrderSerializer
     # permission_classes = [permissions.IsAuthenticated]    # view level permission
 
-class OrderDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = models.OrderItems.objects.all()
+class OrderDetail(generics.ListAPIView):
+    # queryset = models.OrderItems.objects.all()
     serializer_class = serializers.OrderDetailSerializer
     # permission_classes = [permissions.IsAuthenticated]    # view level permission
-
+    
+    # Only show data which has been asked
+    def get_queryset(self):
+        order_id = self.kwargs['pk']
+        order = models.Order.objects.get(id=order_id)
+        order_items = models.OrderItems.objects.filter(order=order)
+        return order_items
