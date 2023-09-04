@@ -32,9 +32,10 @@ class ProductListSerializer(serializers.ModelSerializer):
 
 
 class ProductDetailSerializer(serializers.ModelSerializer):
+    product_ratings = serializers.StringRelatedField(many=True,read_only=True)
     class Meta:
         model = models.Product
-        fields=['id','category','vendor','title','description','price']
+        fields=['id','category','vendor','title','description','price','product_ratings']
 
     def __init__(self, *args, **kwargs):
         super(ProductDetailSerializer,self).__init__(*args,**kwargs)
@@ -88,4 +89,14 @@ class CustomerAddressSerializer(serializers.ModelSerializer):
 
     def __init__(self, *args, **kwargs):
         super(CustomerAddressSerializer,self).__init__(*args,**kwargs)
+        self.Meta.depth = 1
+
+# Product Rating and Review 
+class ProductRatingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.ProductRating
+        fields=['id','customer','product','rating','reviews','add_time']
+
+    def __init__(self, *args, **kwargs):
+        super(ProductRatingSerializer,self).__init__(*args,**kwargs)
         self.Meta.depth = 1
