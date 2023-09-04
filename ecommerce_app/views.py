@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from . import serializers
-from rest_framework import generics,permissions
+from rest_framework import generics,permissions,pagination
 from . import models
 
 # ListAPIView returns data in a list
@@ -20,6 +20,8 @@ class ProductList(generics.ListCreateAPIView):
     queryset = models.Product.objects.all()
     serializer_class = serializers.ProductListSerializer
     # permission_classes = [permissions.IsAuthenticated]    # view level permission
+    # pagination_class =pagination.LimitOffsetPagination
+    pagination_class =pagination.PageNumberPagination
 
 class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.Product.objects.all()
