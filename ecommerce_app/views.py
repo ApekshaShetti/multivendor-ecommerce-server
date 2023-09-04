@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from . import serializers
-from rest_framework import generics,permissions,pagination
+from rest_framework import generics,permissions,pagination,viewsets
 from . import models
 
 # ListAPIView returns data in a list
@@ -57,3 +57,8 @@ class OrderDetail(generics.ListAPIView):
         order = models.Order.objects.get(id=order_id)
         order_items = models.OrderItems.objects.filter(order=order)
         return order_items
+    
+# Customer Address with viewset
+class CustomerAddressViewSet(viewsets.ModelViewSet):
+    serializer_class = serializers.CustomerAddressSerializer
+    queryset = models.CustomerAddress.objects.all()
